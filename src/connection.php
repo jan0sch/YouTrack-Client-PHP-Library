@@ -114,6 +114,6 @@ class Connection
     public function get_issue(\string $id)
     {
         $issue = $this->_get('/issue/'. $id);
-        //FIXME Add code to generate the issue out of the xml.
+        return new Issue($issue);
     }
 }
