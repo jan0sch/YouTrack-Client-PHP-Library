@@ -9,24 +9,83 @@ require("connection.php");
  */
 
 /**
- * A class extending the standard php extension.
+ * A class extending the standard php exception.
  */
-class YouTrackException extends Exception {
-
+class YouTrackException extends \Exception {
+    /**
+     * Constructor
+     *
+     * @param string $url The url that triggered the error.
+     * @param array $response The output of <code>curl_getinfo($resource)</code>.
+     * @param array $content The content returned from the url.
+     */
+    public function __construct($url, $response, $content) {
+        $code = 0;
+        $previous = NULL;
+        $message = "Error for '". $url ."': ". $response['http_code'];
+        if (!empty($response['content_type']) && !preg_match('/text\/html/', $response['content_type'])) {
+            $xml = simplexml_load_string($content);
+            $error = new YouTrackError($xml);
+            $message .= ": ". $error->__get("error");
+        }
+        parent::__construct($message, $code, $previous);
+    }
 }
 
 /**
  * A class describing a youtrack object.
  */
 class YouTrackObject {
+    protected $youtrack = NULL;
+    protected $attributes = array();
 
+    public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+        $this->youtrack = $youtrack;
+        if (!empty($xml)) {
+            if (!($xml instanceof \SimpleXMLElement)) {
+                throw new \Exception("An instance of SimpleXMLElement expected!");
+            }
+            $this->_update_attributes($xml);
+            $this->_update_children_attributes($xml);
+        }
+    }
+
+    public function __get($name) {
+        if (!empty($this->attributes["$name"])) {
+            return $this->attributes["$name"];
+        }
+        throw new \Exception("No such property: $name");
+    }
+
+    public function __set($name, $value) {
+        $this->attributes["$name"] = $value;
+    }
+
+    protected function _update_attributes(\SimpleXMLElement $xml) {
+        foreach($xml->xpath('/*') as $node) {
+            foreach($node->attributes() as $key => $value) {
+                $this->attributes["$key"] = $value;
+            }
+        }
+    }
+
+    protected function _update_children_attributes(\SimpleXMLElement $xml) {
+    }
 }
 
 /**
  * A class describing a youtrack error.
  */
-class YouTrackError {
+class YouTrackError extends YouTrackObject {
+    public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+        parent::__construct($xml, $youtrack);
+    }
 
+    protected function _update_attributes(\SimpleXMLElement $xml) {
+        foreach($xml->xpath('/error') as $node) {
+            $this->attributes['error'] = (string)$node;
+        }
+    }
 }
 
 /**
