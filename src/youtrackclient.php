@@ -96,8 +96,36 @@ class YouTrackError extends YouTrackObject {
 /**
  * A class describing a youtrack issue.
  */
-class Issue {
+class Issue extends YouTrackObject {
+  private $links = array();
+  private $attachments = array();
 
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+    if ($xml) {
+      $links = $xml->xpath('//links');
+      if (count($links) > 0) {
+	foreach($links as $link) {
+	  foreach($link->xpath('//issueLink') as $node) {
+	    $this->links[] = new Issue($node, $youtrack);
+	  }
+	}
+      } else {
+	$this->links = array();
+      }
+
+      $attachments = $xml->xpath('//attachments');
+      if (count($attachments) > 0) {
+	foreach($attachments as $att) {
+	  foreach($att->xpath('//fileUrl') as $node) {
+	    $this->attachments[] = new Attachment($node, $youtrack);
+	  }
+	}
+      } else {
+	$this->attachments = array();
+      }
+    }
+  }
 }
 
 /**
