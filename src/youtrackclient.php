@@ -70,6 +70,11 @@ class YouTrackObject {
     }
 
     protected function _update_children_attributes(\SimpleXMLElement $xml) {
+        foreach($xml->xpath('//*') as $node) {
+            foreach($node->attributes() as $key => $value) {
+                $this->__set($key, $value);
+            }
+        }
     }
 }
 
