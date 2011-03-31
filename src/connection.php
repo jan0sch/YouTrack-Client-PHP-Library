@@ -161,6 +161,7 @@ class Connection {
   }
 
   public function get_attachment_content($url) {
+    //TODO Switch to curl for better error handling.
     $file = file_get_contents($url);
     if ($file === FALSE) {
       throw new \Exception("An error occured while trying to retrieve the following file: $url");
