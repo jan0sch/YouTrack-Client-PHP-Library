@@ -33,6 +33,7 @@ class Connection {
     }
     $this->headers[CURLOPT_COOKIE] = $content;
     $this->headers[CURLOPT_HTTPHEADER] = array('Cache-Control' => 'no-cache');
+    curl_close($this->http);
   }
 
   /**
@@ -80,6 +81,7 @@ class Connection {
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
     $content = curl_exec($this->http);
     $response = curl_getinfo($this->http);
+    curl_close($this->http);
     if ((int) $response['http_code'] != 200 && (int) $response['http_code'] != 201 && (int) $response['http_code'] != $ignore_status) {
       throw new YouTrackException($url, $response, $content);
     }
@@ -156,5 +158,13 @@ class Connection {
       $attachments[] = new Comment($node);
     }
     return $attachments;
+  }
+
+  public function get_attachment_content($url) {
+    $file = file_get_contents($url);
+    if ($file === FALSE) {
+      throw new \Exception("An error occured while trying to retrieve the following file: $url");
+    }
+    return $file;
   }
 }
