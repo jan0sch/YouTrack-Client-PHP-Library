@@ -12,3 +12,12 @@ Requirements
 * curl
 * simplexml
 * YouTrack with REST-API enabled
+
+Usage
+-----
+
+    <?php
+    require_once("youtrackclient.php");
+    $youtrack = new \YouTrack\Connection("http://example.com", "login", "password");
+    ...
+
