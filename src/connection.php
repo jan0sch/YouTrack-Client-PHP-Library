@@ -176,4 +176,16 @@ class Connection {
   public function create_attachment($issue_id, $name, $content, $author_login = '', $content_type = NULL, $content_length = NULL, $created = NULL, $group = '') {
     throw new \Exception("No yet implemented!");
   }
+
+  public function get_links($id , $outward_only = FALSE) {
+    $links = array();
+    $req = $this->_request('GET', '/issue/'. urlencode($id) .'/link');
+    $xml = simplexml_load_string($req['content']);
+    foreach($xml->children() as $node) {
+      if (($node->attributes()->source != $id) || !$outward_only) {
+        $links[] = new Link($node);
+      }
+    }
+    return $links;
+  }
 }
