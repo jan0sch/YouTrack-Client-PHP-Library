@@ -13,7 +13,7 @@ class Connection
     private $base_url = '';
     private $headers = array();
 
-    public function __construct(\string $url, \string $login, \string $password)
+    public function __construct($url, $login, $password)
     {
         $this->http = curl_init();
         $this->url = $url;
@@ -21,7 +21,7 @@ class Connection
         $this->_login($login, $password);
     }
 
-    private function _login(\string $login, \string $password)
+    private function _login($login, $password)
     {
         curl_setopt($this->http, CURLOPT_POST, TRUE);
         curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length' => '0'));
@@ -47,7 +47,7 @@ class Connection
      * @return array An array holding the response content in 'content' and the response status
      * in 'response'.
      */
-    private function _request(\string $method, \string $url, \string $body = NULL, \int $ignore_status = 0)
+    private function _request($method, $url, $body = NULL, $ignore_status = 0)
     {
         $headers = $this->headers;
         if ($method == 'PUT' || $method == 'POST') {
@@ -88,7 +88,7 @@ class Connection
         );
     }
 
-    private function _request_xml(\string $method, \string $url, \string $body = NULL, \int $ignore_status = 0)
+    private function _request_xml($method, $url, $body = NULL, $ignore_status = 0)
     {
         $r = $this->_request($method, $url, $body, $ignore_status);
         $response = $r['response'];
@@ -101,17 +101,17 @@ class Connection
         return $content;
     }
 
-    private function _get(\string $url)
+    private function _get($url)
     {
         return $this->_request_xml('GET', $url);
     }
 
-    private function _put(\string $url)
+    private function _put($url)
     {
         return $this->_request_xml('PUT', $url, '<empty/>\n\n');
     }
 
-    public function get_issue(\string $id)
+    public function get_issue($id)
     {
         $issue = $this->_get('/issue/'. $id);
         return new Issue($issue);

@@ -144,7 +144,7 @@ class Issue extends YouTrackObject
 /**
  * A class describing a youtrack comment.
  */
-class Comment
+class Comment extends YouTrackObject
 {
 
 }
@@ -152,7 +152,7 @@ class Comment
 /**
  * A class describing a youtrack link.
  */
-class Link
+class Link extends YouTrackObject
 {
 
 }
@@ -160,7 +160,7 @@ class Link
 /**
  * A class describing a youtrack attachment.
  */
-class Attachment
+class Attachment extends YouTrackObject
 {
 
 }
@@ -168,7 +168,7 @@ class Attachment
 /**
  * A class describing a youtrack user.
  */
-class User
+class User extends YouTrackObject
 {
 
 }
@@ -176,7 +176,7 @@ class User
 /**
  * A class describing a youtrack group.
  */
-class Group
+class Group extends YouTrackObject
 {
 
 }
@@ -184,7 +184,7 @@ class Group
 /**
  * A class describing a youtrack role.
  */
-class Role
+class Role extends YouTrackObject
 {
 
 }
@@ -192,7 +192,7 @@ class Role
 /**
  * A class describing a youtrack project.
  */
-class Project
+class Project extends YouTrackObject
 {
 
 }
@@ -200,7 +200,7 @@ class Project
 /**
  * A class describing a youtrack subsystem.
  */
-class Subsystem
+class Subsystem extends YouTrackObject
 {
 
 }
@@ -208,7 +208,7 @@ class Subsystem
 /**
  * A class describing a youtrack version.
  */
-class Version
+class Version extends YouTrackObject
 {
 
 }
@@ -216,7 +216,7 @@ class Version
 /**
  * A class describing a youtrack build.
  */
-class Build
+class Build extends YouTrackObject
 {
 
 }
@@ -224,7 +224,7 @@ class Build
 /**
  * A class describing a youtrack issue link type.
  */
-class IssueLinkType
+class IssueLinkType extends YouTrackObject
 {
 
 }
@@ -232,7 +232,7 @@ class IssueLinkType
 /**
  * A class describing a youtrack custom field.
  */
-class CustomField
+class CustomField extends YouTrackObject
 {
 
 }
@@ -240,7 +240,7 @@ class CustomField
 /**
  * A class describing a youtrack project custom field.
  */
-class ProjectCustomField
+class ProjectCustomField extends YouTrackObject
 {
 
 }
@@ -248,7 +248,7 @@ class ProjectCustomField
 /**
  * An enum bundle.
  */
-class EnumBundle
+class EnumBundle extends YouTrackObject
 {
 
 }
