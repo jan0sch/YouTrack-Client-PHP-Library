@@ -20,7 +20,7 @@ class Connection {
     $this->_login($login, $password);
   }
 
-  private function _login($login, $password) {
+  protected function _login($login, $password) {
     curl_setopt($this->http, CURLOPT_POST, TRUE);
     curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length' => 0)); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
     curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login=' . $login . '&password=' . $password);
@@ -47,7 +47,7 @@ class Connection {
    * @return array An array holding the response content in 'content' and the response status
    * in 'response'.
    */
-  private function _request($method, $url, $body = NULL, $ignore_status = 0) {
+  protected function _request($method, $url, $body = NULL, $ignore_status = 0) {
     $headers = $this->headers;
     if ($method == 'PUT' || $method == 'POST') {
       $headers[CURLOPT_HTTPHEADER]['Content-Type'] = 'application/xml; charset=UTF-8';
@@ -92,7 +92,7 @@ class Connection {
     );
   }
 
-  private function _request_xml($method, $url, $body = NULL, $ignore_status = 0) {
+  protected function _request_xml($method, $url, $body = NULL, $ignore_status = 0) {
     $r = $this->_request($method, $url, $body, $ignore_status);
     $response = $r['response'];
     $content = $r['content'];
@@ -104,11 +104,11 @@ class Connection {
     return $content;
   }
 
-  private function _get($url) {
+  protected function _get($url) {
     return $this->_request_xml('GET', $url);
   }
 
-  private function _put($url) {
+  protected function _put($url) {
     return $this->_request_xml('PUT', $url, '<empty/>\n\n');
   }
 

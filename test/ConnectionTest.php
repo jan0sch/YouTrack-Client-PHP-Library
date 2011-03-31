@@ -1,11 +1,11 @@
 <?php
 namespace YouTrack;
-require("src/youtrackclient.php");
+require_once("requirements.php");
 /**
  * A helper class for connection testing.
  */
 class TestConnection extends Connection {
-  private function _login($login, $password) {
+  protected function _login($login, $password) {
     //Do nothing here.
   }
 }

@@ -1,6 +1,6 @@
 <?php
 namespace YouTrack;
-require("src/youtrackclient.php");
+require_once("requirements.php");
 /**
  * Unit tests for the youtrack exception class.
  *
