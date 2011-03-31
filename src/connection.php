@@ -142,9 +142,19 @@ class Connection {
     $comments = array();
     $req = $this->_request('GET', '/issue/'. $id .'/comment');
     $xml = simplexml_load_string($req['content']);
-    foreach($xml->xpath('//comment') as $node) {
+    foreach($xml->children() as $node) {
       $comments[] = new Comment($node);
     }
     return $comments;
+  }
+
+  public function get_attachments($id) {
+    $attachments = array();
+    $req = $this->_request('GET', '/issue/'. $id .'/attachment');
+    $xml = simplexml_load_string($req['content']);
+    foreach($xml->children() as $node) {
+      $attachments[] = new Comment($node);
+    }
+    return $attachments;
   }
 }
