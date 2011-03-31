@@ -188,4 +188,8 @@ class Connection {
     }
     return $links;
   }
+
+  public function get_user($login) {
+    return new User($this->_get('/admin/user/'. urlencode($login)));
+  }
 }
