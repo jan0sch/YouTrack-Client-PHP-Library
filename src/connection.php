@@ -168,4 +168,12 @@ class Connection {
     }
     return $file;
   }
+
+  public function create_attachment_from_attachment($issue_id, Attachment $attachment) {
+    throw new \Exception("No yet implemented!");
+  }
+
+  public function create_attachment($issue_id, $name, $content, $author_login = '', $content_type = NULL, $content_length = NULL, $created = NULL, $group = '') {
+    throw new \Exception("No yet implemented!");
+  }
 }
