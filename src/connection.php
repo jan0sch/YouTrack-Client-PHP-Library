@@ -12,6 +12,7 @@ class Connection
     private $url = '';
     private $base_url = '';
     private $headers = array();
+    private $debug_verbose = FALSE; // Set to TRUE to enable verbose logging of curl messages.
 
     public function __construct($url, $login, $password)
     {
@@ -24,9 +25,10 @@ class Connection
     private function _login($login, $password)
     {
         curl_setopt($this->http, CURLOPT_POST, TRUE);
-        curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length' => '0'));
+        curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length' => 0)); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
         curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login=' . $login . '&password=' . $password);
         curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
         $content = curl_exec($this->http);
         $response = curl_getinfo($this->http);
         if ((int)$response['http_code'] != 200) {
@@ -76,6 +78,7 @@ class Connection
         }
         curl_setopt($this->http, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
         $content = curl_exec($this->http);
         $response = curl_getinfo($this->http);
         if ((int)$response['http_code'] != 200 && (int)$response['http_code'] != 201 && (int)$response['http_code'] != $ignore_status) {
