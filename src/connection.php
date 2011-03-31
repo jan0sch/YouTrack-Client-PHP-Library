@@ -137,4 +137,14 @@ class Connection {
     $issue = $this->_request_xml('POST', '/issue?' . $parameters);
     return new Issue($issue);
   }
+
+  public function get_comments($id) {
+    $comments = array();
+    $req = $this->_request('GET', '/issue/'. $id .'/comment');
+    $xml = simplexml_load_string($req['content']);
+    foreach($xml->xpath('//comment') as $node) {
+      $comments[] = new Comment($node);
+    }
+    return $comments;
+  }
 }
