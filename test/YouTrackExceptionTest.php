@@ -1,5 +1,6 @@
 <?php
-require("../src/youtrackclient.php");
+namespace YouTrack;
+require("src/youtrackclient.php");
 /**
  * Unit tests for the youtrack client php library.
  *
@@ -7,7 +8,7 @@ require("../src/youtrackclient.php");
  * Created at: 30.03.11 10:42
  */
 
-class YouTrackExceptionTest extends PHPUnit_Framework_TestCase {
+class YouTrackExceptionTest extends \PHPUnit_Framework_TestCase {
   public function testConstruct01() {
     $url = "http://example.com";
     $response = array(
