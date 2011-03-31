@@ -32,7 +32,7 @@ class Connection {
       throw new YouTrackException('/user/login', $response, $content);
     }
     $this->headers[CURLOPT_COOKIE] = $content;
-    $this->headers[CURLOPT_HTTPHEADER] = array('Cache-Control' => 'no-cache');
+    $this->headers[CURLOPT_HTTPHEADER] = array('Cache-Control: no-cache');
     curl_close($this->http);
   }
 
@@ -50,8 +50,8 @@ class Connection {
   protected function _request($method, $url, $body = NULL, $ignore_status = 0) {
     $headers = $this->headers;
     if ($method == 'PUT' || $method == 'POST') {
-      $headers[CURLOPT_HTTPHEADER]['Content-Type'] = 'application/xml; charset=UTF-8';
-      $headers[CURLOPT_HTTPHEADER]['Content-Length'] = mb_strlen($body);
+      $headers[CURLOPT_HTTPHEADER][] = 'Content-Type: application/xml; charset=UTF-8';
+      $headers[CURLOPT_HTTPHEADER][] = 'Content-Length: '. mb_strlen($body);
     }
     switch ($method) {
       case 'GET':
