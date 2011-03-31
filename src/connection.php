@@ -14,26 +14,26 @@ class Connection {
   private $debug_verbose = FALSE; // Set to TRUE to enable verbose logging of curl messages.
 
   public function __construct($url, $login, $password) {
-    $this->http = \curl_init();
+    $this->http = curl_init();
     $this->url = $url;
     $this->base_url = $url . '/rest';
     $this->_login($login, $password);
   }
 
   protected function _login($login, $password) {
-    \curl_setopt($this->http, CURLOPT_POST, TRUE);
-    \curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length' => 0)); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
-    \curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login=' . $login . '&password=' . $password);
-    \curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
-    \curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
-    $content = \curl_exec($this->http);
-    $response = \curl_getinfo($this->http);
+    curl_setopt($this->http, CURLOPT_POST, TRUE);
+    curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length' => 0)); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
+    curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login=' . $login . '&password=' . $password);
+    curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
+    $content = curl_exec($this->http);
+    $response = curl_getinfo($this->http);
     if ((int) $response['http_code'] != 200) {
       throw new YouTrackException('/user/login', $response, $content);
     }
     $this->headers[CURLOPT_COOKIE] = $content;
     $this->headers[CURLOPT_HTTPHEADER] = array('Cache-Control' => 'no-cache');
-    \curl_close($this->http);
+    curl_close($this->http);
   }
 
   /**
@@ -55,7 +55,7 @@ class Connection {
     }
     switch ($method) {
       case 'GET':
-        \curl_setopt($this->http, CURLOPT_HTTPGET, TRUE);
+        curl_setopt($this->http, CURLOPT_HTTPGET, TRUE);
         break;
       case 'PUT':
         $size = filesize($body);
@@ -63,25 +63,25 @@ class Connection {
           throw new \Exception("Can't open file $body!");
         }
         $handle = fopen($body, 'r');
-        \curl_setopt($this->http, CURLOPT_PUT, TRUE);
-        \curl_setopt($this->http, CURLOPT_INFILE, $handle);
-        \curl_setopt($this->http, CURLOPT_INFILESIZE, 0);
+        curl_setopt($this->http, CURLOPT_PUT, TRUE);
+        curl_setopt($this->http, CURLOPT_INFILE, $handle);
+        curl_setopt($this->http, CURLOPT_INFILESIZE, 0);
         break;
       case 'POST':
-        \curl_setopt($this->http, CURLOPT_POST, TRUE);
+        curl_setopt($this->http, CURLOPT_POST, TRUE);
         if (!empty($body)) {
-          \curl_setopt($this->http, CURLOPT_POSTFIELDS, $body);
+          curl_setopt($this->http, CURLOPT_POSTFIELDS, $body);
         }
         break;
       default:
         throw new \Exception("Unknown method $method!");
     }
-    \curl_setopt($this->http, CURLOPT_HTTPHEADER, $headers);
-    \curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
-    \curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
-    $content = \curl_exec($this->http);
-    $response = \curl_getinfo($this->http);
-    \curl_close($this->http);
+    curl_setopt($this->http, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
+    $content = curl_exec($this->http);
+    $response = curl_getinfo($this->http);
+    curl_close($this->http);
     if ((int) $response['http_code'] != 200 && (int) $response['http_code'] != 201 && (int) $response['http_code'] != $ignore_status) {
       throw new YouTrackException($url, $response, $content);
     }
