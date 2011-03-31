@@ -72,6 +72,9 @@ class Connection
                 break;
             case 'POST':
                 curl_setopt($this->http, CURLOPT_POST, TRUE);
+                if (!empty($body)) {
+                    curl_setopt($this->http, CURLOPT_POSTFIELDS, $body);
+                }
                 break;
             default:
                 throw new \Exception("Unknown method $method!");
@@ -117,6 +120,30 @@ class Connection
     public function get_issue($id)
     {
         $issue = $this->_get('/issue/'. $id);
+        return new Issue($issue);
+    }
+
+    public function create_issue($project, $assignee, $summary, $description, $priority, $type, $subsystem, $state, $affectsVersion, $fixedVersion, $fixedInBuild)
+    {
+        $parameters = '';
+        $args = array(
+            'project' => $project,
+            'assignee' => $assignee,
+            'summary' => $summary,
+            'description' => $description,
+            'priority' => $priority,
+            'type' => $type,
+            'subsystem' => $subsystem,
+            'state' => $state,
+            'affectsVersion' => $affectsVersion,
+            'fixedVersion' => $fixedVersion,
+            'fixedInBuild' => $fixedInBuild,
+        );
+        foreach($args as $key => $value) {
+            $parameters .= $key .'='. urlencode($value) .'&';
+        }
+        rtrim($parameters, '&');
+        $issue = $this->_request_xml('POST', '/issue?'. $parameters);
         return new Issue($issue);
     }
 }
