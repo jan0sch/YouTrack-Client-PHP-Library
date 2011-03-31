@@ -2,14 +2,13 @@
 namespace YouTrack;
 require("src/youtrackclient.php");
 /**
- * Unit tests for the youtrack client php library.
+ * Unit tests for the youtrack exception class.
  *
  * @author Jens Jahnke <jan0sch@gmx.net>
  * Created at: 30.03.11 10:42
  */
-
 class YouTrackExceptionTest extends \PHPUnit_Framework_TestCase {
-  public function testConstruct01() {
+  public function test___construct01() {
     $url = "http://example.com";
     $response = array(
       'http_code' => 200,
@@ -19,7 +18,7 @@ class YouTrackExceptionTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals("Error for 'http://example.com': 200", $e->getMessage());
   }
 
-  public function testConstruct02() {
+  public function test___construct02() {
     $url = "http://example.com";
     $response = array(
       'http_code' => 404,
@@ -29,7 +28,7 @@ class YouTrackExceptionTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals("Error for 'http://example.com': 404", $e->getMessage());
   }
 
-  public function testConstruct03() {
+  public function test___construct03() {
     $url = "http://example.com";
     $response = array(
       'http_code' => 500,
@@ -40,7 +39,7 @@ class YouTrackExceptionTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals("Error for 'http://example.com': 500", $e->getMessage());
   }
 
-  public function testConstruct04() {
+  public function test___construct04() {
     $url = "http://example.com";
     $response = array(
       'http_code' => 403,
