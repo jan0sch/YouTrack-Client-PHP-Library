@@ -11,6 +11,7 @@ class Connection {
   private $url = '';
   private $base_url = '';
   private $headers = array();
+  private $cookies = array();
   private $debug_verbose = FALSE; // Set to TRUE to enable verbose logging of curl messages.
 
   public function __construct($url, $login, $password) {
@@ -25,13 +26,19 @@ class Connection {
     curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length: 0')); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
     curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login=' . $login . '&password=' . $password);
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($this->http, CURLOPT_HEADER, TRUE);
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
     $content = curl_exec($this->http);
     $response = curl_getinfo($this->http);
     if ((int) $response['http_code'] != 200) {
       throw new YouTrackException('/user/login', $response, $content);
     }
-    $this->headers[CURLOPT_COOKIE] = $content;
+    $cookies = array();
+    preg_match_all('/^Set-Cookie: (.*?)=(.*?)$/sm', $content, $cookies, PREG_SET_ORDER);
+    foreach($cookies as $cookie) {
+      $parts = parse_url($cookie[0]);
+      $this->cookies[] = $parts['path'];
+    }
     $this->headers[CURLOPT_HTTPHEADER] = array('Cache-Control: no-cache');
     curl_close($this->http);
   }
