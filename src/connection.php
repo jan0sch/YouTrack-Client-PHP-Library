@@ -86,6 +86,7 @@ class Connection {
     curl_setopt($this->http, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
+    curl_setopt($this->http, CURLOPT_COOKIE, implode(';', $this->cookies));
     $content = curl_exec($this->http);
     $response = curl_getinfo($this->http);
     curl_close($this->http);
