@@ -267,7 +267,17 @@ class Subsystem extends YouTrackObject {
  * A class describing a youtrack version.
  */
 class Version extends YouTrackObject {
-
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+    $check = $this->__get('description');
+    if (empty($check)) {
+      $this->__set('description', '');
+    }
+    $check = $this->__get('releaseDate');
+    if (empty($check)) {
+      $this->__set('releaseDate', NULL);
+    }
+  }
 }
 
 /**
