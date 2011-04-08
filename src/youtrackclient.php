@@ -258,7 +258,9 @@ class Project extends YouTrackObject {
  * A class describing a youtrack subsystem.
  */
 class Subsystem extends YouTrackObject {
-
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
 }
 
 /**
