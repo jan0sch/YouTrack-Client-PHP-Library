@@ -178,7 +178,13 @@ class Issue extends YouTrackObject {
  * A class describing a youtrack comment.
  */
 class Comment extends YouTrackObject {
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
 
+  public function get_author() {
+    return $this->youtrack->get_user($this->__get('author'));
+  }
 }
 
 /**
