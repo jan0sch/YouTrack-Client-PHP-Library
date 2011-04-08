@@ -13,6 +13,7 @@ class Connection {
   private $headers = array();
   private $cookies = array();
   private $debug_verbose = FALSE; // Set to TRUE to enable verbose logging of curl messages.
+  private $user_agent = 'Mozilla/5.0'; // Use this as user agent string.
 
   public function __construct($url, $login, $password) {
     $this->http = curl_init();
@@ -27,6 +28,7 @@ class Connection {
     curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login=' . $login . '&password=' . $password);
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($this->http, CURLOPT_HEADER, TRUE);
+    curl_setopt($this->http, CURLOPT_USERAGENT, $this->user_agent);
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
     $content = curl_exec($this->http);
     $response = curl_getinfo($this->http);
@@ -55,6 +57,7 @@ class Connection {
    * in 'response'.
    */
   protected function _request($method, $url, $body = NULL, $ignore_status = 0) {
+    $this->http = curl_init($this->base_url . $url);
     $headers = $this->headers;
     if ($method == 'PUT' || $method == 'POST') {
       $headers[CURLOPT_HTTPHEADER][] = 'Content-Type: application/xml; charset=UTF-8';
@@ -83,7 +86,8 @@ class Connection {
       default:
         throw new \Exception("Unknown method $method!");
     }
-    curl_setopt($this->http, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($this->http, CURLOPT_HTTPHEADER, $headers[CURLOPT_HTTPHEADER]);
+    curl_setopt($this->http, CURLOPT_USERAGENT, $this->user_agent);
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
     curl_setopt($this->http, CURLOPT_COOKIE, implode(';', $this->cookies));
