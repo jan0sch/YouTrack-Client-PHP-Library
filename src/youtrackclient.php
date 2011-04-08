@@ -241,7 +241,17 @@ class Role extends YouTrackObject {
  * A class describing a youtrack project.
  */
 class Project extends YouTrackObject {
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
 
+  public function get_subsystems() {
+    //TODO Not yet implemented!
+  }
+
+  public function create_subsystem($name, $is_default, $default_assignee_login) {
+    //TODO Not yet implemented!
+  }
 }
 
 /**
