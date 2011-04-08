@@ -64,15 +64,20 @@ class YouTrackObject {
   protected function _update_attributes(\SimpleXMLElement $xml) {
     foreach ($xml->xpath('/*') as $node) {
       foreach ($node->attributes() as $key => $value) {
-        $this->attributes["$key"] = $value;
+        $this->attributes["$key"] = (string)$value;
       }
     }
   }
 
   protected function _update_children_attributes(\SimpleXMLElement $xml) {
-    foreach ($xml->xpath('//*') as $node) {
+    foreach ($xml->children() as $node) {
       foreach ($node->attributes() as $key => $value) {
-        $this->__set($key, $value);
+        if ($key == 'name') {
+          $this->__set($value, (string)$node->value);
+        }
+        else {
+          $this->__set($key, (string)$value);
+        }
       }
     }
   }
