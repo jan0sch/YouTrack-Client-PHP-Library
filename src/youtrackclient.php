@@ -108,26 +108,26 @@ class Issue extends YouTrackObject {
   public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
     parent::__construct($xml, $youtrack);
     if ($xml) {
-      $links = $xml->xpath('//links');
-      if (count($links) > 0) {
-        foreach ($links as $link) {
-          foreach ($link->xpath('//issueLink') as $node) {
-            $this->links[] = new Issue($node, $youtrack);
+      if (!empty($this->attributes['links'])) {
+        foreach($xml->xpath('//field[@name="links"]') as $node) {
+          foreach($node->children() as $link) {
+            $this->links[(string)$link] = array(
+              'type' => (string)$link->attributes()->type,
+              'role' => (string)$link->attributes()->role,
+            );
           }
         }
-      } else {
-        $this->links = array();
+        $this->__set('links', $this->links);
       }
-
-      $attachments = $xml->xpath('//attachments');
-      if (count($attachments) > 0) {
-        foreach ($attachments as $att) {
-          foreach ($att->xpath('//fileUrl') as $node) {
-            $this->attachments[] = new Attachment($node, $youtrack);
+      if (!empty($this->attributes['attachments'])) {
+        foreach($xml->xpath('//field[@name="attachments"]') as $node) {
+          foreach($node->children() as $attachment) {
+            $this->attachments[(string)$attachment] = array(
+              'url' => (string)$attachment->attributes()->url,
+            );
           }
         }
-      } else {
-        $this->attachments = array();
+        $this->__set('attachments', $this->attachments);
       }
     }
   }
