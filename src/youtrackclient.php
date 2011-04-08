@@ -54,7 +54,7 @@ class YouTrackObject {
     if (!empty($this->attributes["$name"])) {
       return $this->attributes["$name"];
     }
-    throw new \Exception("No such property: $name");
+    return NULL;
   }
 
   public function __set($name, $value) {
@@ -104,32 +104,73 @@ class YouTrackError extends YouTrackObject {
 class Issue extends YouTrackObject {
   private $links = array();
   private $attachments = array();
+  private $comments = array();
 
   public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
     parent::__construct($xml, $youtrack);
     if ($xml) {
       if (!empty($this->attributes['links'])) {
+        $links = array();
         foreach($xml->xpath('//field[@name="links"]') as $node) {
           foreach($node->children() as $link) {
-            $this->links[(string)$link] = array(
+            $links[(string)$link] = array(
               'type' => (string)$link->attributes()->type,
               'role' => (string)$link->attributes()->role,
             );
           }
         }
-        $this->__set('links', $this->links);
+        $this->__set('links', $links);
       }
       if (!empty($this->attributes['attachments'])) {
+        $attachments = array();
         foreach($xml->xpath('//field[@name="attachments"]') as $node) {
           foreach($node->children() as $attachment) {
-            $this->attachments[(string)$attachment] = array(
+            $attachments[(string)$attachment] = array(
               'url' => (string)$attachment->attributes()->url,
             );
           }
         }
-        $this->__set('attachments', $this->attachments);
+        $this->__set('attachments', $attachments);
       }
     }
+  }
+
+  public function get_reporter() {
+    return $this->youtrack->get_user($this->__get('reporterName'));
+  }
+
+  public function has_assignee() {
+    $name = $this->__get('assigneeName');
+    return !empty($name);
+  }
+
+  public function get_assignee() {
+    return $this->youtrack->get_user($this->__get('assigneeName'));
+  }
+
+  public function get_updater() {
+    return $this->youtrack->get_user($this->__get('updaterName'));
+  }
+
+  public function get_comments() {
+    if (empty($this->comments)) {
+      $this->comments = $this->youtrack->get_comments($this->__get('id'));
+    }
+    return $this->comments;
+  }
+
+  public function get_attachments() {
+    if (empty($this->attachments)) {
+      $this->attachments = $this->youtrack->get_attachments($this->__get('id'));
+    }
+    return $this->attachments;
+  }
+
+  public function get_links() {
+    if (empty($this->links)) {
+      $this->links = $this->youtrack->get_links($this->__get('id'));
+    }
+    return $this->links;
   }
 }
 
