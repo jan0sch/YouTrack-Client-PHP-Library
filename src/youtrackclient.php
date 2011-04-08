@@ -200,7 +200,13 @@ class Link extends YouTrackObject {
  * A class describing a youtrack attachment.
  */
 class Attachment extends YouTrackObject {
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
 
+  public function get_content() {
+    return $this->youtrack->get_attachment_content($this->__get('url'));
+  }
 }
 
 /**
