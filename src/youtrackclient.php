@@ -213,7 +213,9 @@ class Attachment extends YouTrackObject {
  * A class describing a youtrack user.
  */
 class User extends YouTrackObject {
-
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
 }
 
 /**
