@@ -284,7 +284,9 @@ class Version extends YouTrackObject {
  * A class describing a youtrack build.
  */
 class Build extends YouTrackObject {
-
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
 }
 
 /**
