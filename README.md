@@ -22,5 +22,6 @@ Usage
     <?php
     require_once("youtrackclient.php");
     $youtrack = new \YouTrack\Connection("http://example.com", "login", "password");
+    $issue = $youtrack->get_issue("TEST-1");
     ...
 
