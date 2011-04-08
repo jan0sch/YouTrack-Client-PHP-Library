@@ -311,12 +311,11 @@ class CustomField extends YouTrackObject {
  * A class describing a youtrack project custom field.
  */
 class ProjectCustomField extends YouTrackObject {
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
 
-}
-
-/**
- * An enum bundle.
- */
-class EnumBundle extends YouTrackObject {
-
+  protected function _update_children_attributes(\SimpleXMLElement $xml) {
+    //TODO Not yet implemented!
+  }
 }
