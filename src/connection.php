@@ -243,5 +243,16 @@ class Connection {
     return new Project($project);
   }
 
+  public function get_project_assignee_groups($project_id) {
+    $xml = $this->_get('/admin/project/'. urlencode($project_id) .'/assignee/group');
+    $groups = array();
+    foreach ($xml->children() as $group) {
+      $groups[] = new Group(new \SimpleXMLElement($group->asXML()));
+    }
+    return $groups;
+  }
 
+  public function get_group($name) {
+    return new Group($this->_get('/admin/group/'. urlencode($name)));
+  }
 }
