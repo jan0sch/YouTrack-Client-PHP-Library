@@ -272,7 +272,7 @@ class Connection {
   }
 
   public function create_group(Group $group) {
-    $r = $this->_put('/admin/group/%s?description=noDescription&autoJoin=false'. urlencode($group->name));
+    $r = $this->_put('/admin/group/'. urlencode($group->name) .'?description=noDescription&autoJoin=false');
     return $r['response'];
   }
 }
