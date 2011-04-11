@@ -362,4 +362,23 @@ class Connection {
     );
     return $this->_put('/admin/project/'. urlencode($project_id) .'?'. http_build_query($params));
   }
+
+  public function create_subsystems($project_id, $subsystems) {
+    foreach ($subsystems as $subsystem) {
+      $this->create_subsystem($project_id, $subsystem);
+    }
+  }
+
+  public function create_subsystem($project_id, $subsystem) {
+    return $this->create_subsystem_detailed($project_id, $subsystem->name, $subsystem->isDefault, $subsystem->defaultAssignee);
+  }
+
+  public function create_subsystem_detailed($project_id, $name, $is_default, $default_assignee_login) {
+    $params = array(
+      'isDefault' => $is_default,
+      'defaultAssignee' => $default_assignee_login,
+    );
+    $this->_put('/admin/project/'. urlencode($project_id). '/subsystem/'. urlencode($name) .'?'. http_build_query($params));
+    return 'Created';
+  }
 }
