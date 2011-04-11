@@ -255,4 +255,13 @@ class Connection {
   public function get_group($name) {
     return new Group($this->_get('/admin/group/'. urlencode($name)));
   }
+
+  public function get_user_groups($login) {
+    $xml = $this->_get('/admin/user/'. urlencode($login) .'/group');
+    $groups = array();
+    foreach ($xml->children() as $group) {
+      $groups[] = new Group(new \SimpleXMLElement($group->asXML()));
+    }
+    return $groups;
+  }
 }
