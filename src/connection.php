@@ -279,4 +279,8 @@ class Connection {
   public function get_role($name) {
     return new Role($this->_get('/admin/role/'. urlencode($name)));
   }
+
+  public function get_subsystem($project_id, $name) {
+    return new Subsystem($this->_get('/admin/project/'. urlencode($project_id) .'/subsystem/'. urlencode($name)));
+  }
 }
