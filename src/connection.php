@@ -139,31 +139,26 @@ class Connection {
   }
 
   public function create_issue($project, $assignee, $summary, $description, $priority, $type, $subsystem, $state, $affectsVersion, $fixedVersion, $fixedInBuild) {
-    $parameters = '';
-    $args = array(
-      'project' => $project,
-      'assignee' => $assignee,
-      'summary' => $summary,
-      'description' => $description,
-      'priority' => $priority,
-      'type' => $type,
-      'subsystem' => $subsystem,
-      'state' => $state,
-      'affectsVersion' => $affectsVersion,
-      'fixedVersion' => $fixedVersion,
-      'fixedInBuild' => $fixedInBuild,
+    $params = array(
+      'project' => (string)$project,
+      'assignee' => (string)$assignee,
+      'summary' => (string)$summary,
+      'description' => (string)$description,
+      'priority' => (string)$priority,
+      'type' => (string)$type,
+      'subsystem' => (string)$subsystem,
+      'state' => (string)$state,
+      'affectsVersion' => (string)$affectsVersion,
+      'fixedVersion' => (string)$fixedVersion,
+      'fixedInBuild' => (string)$fixedInBuild,
     );
-    foreach ($args as $key => $value) {
-      $parameters .= $key . '=' . urlencode($value) . '&';
-    }
-    rtrim($parameters, '&');
-    $issue = $this->_request_xml('POST', '/issue?' . $parameters);
+    $issue = $this->_request_xml('POST', '/issue?'. http_build_query($params));
     return new Issue($issue);
   }
 
   public function get_comments($id) {
     $comments = array();
-    $req = $this->_request('GET', '/issue/'. $id .'/comment');
+    $req = $this->_request('GET', '/issue/'. urlencode($id) .'/comment');
     $xml = simplexml_load_string($req['content']);
     foreach($xml->children() as $node) {
       $comments[] = new Comment($node);
@@ -173,7 +168,7 @@ class Connection {
 
   public function get_attachments($id) {
     $attachments = array();
-    $req = $this->_request('GET', '/issue/'. $id .'/attachment');
+    $req = $this->_request('GET', '/issue/'. urlencode($id) .'/attachment');
     $xml = simplexml_load_string($req['content']);
     foreach($xml->children() as $node) {
       $attachments[] = new Comment($node);
@@ -354,11 +349,11 @@ class Connection {
 
   public function create_project_detailed($project_id, $project_name, $project_description, $project_lead_login, $starting_number = 1) {
     $params = array(
-      'projectName' => $project_name,
-      'description' => $project_description,
-      'projectLeadLogin' => $project_lead_login,
-      'lead' => $project_lead_login,
-      'startingNumber' => $starting_number,
+      'projectName' => (string)$project_name,
+      'description' => (string)$project_description,
+      'projectLeadLogin' => (string)$project_lead_login,
+      'lead' => (string)$project_lead_login,
+      'startingNumber' => (string)$starting_number,
     );
     return $this->_put('/admin/project/'. urlencode($project_id) .'?'. http_build_query($params));
   }
@@ -375,8 +370,8 @@ class Connection {
 
   public function create_subsystem_detailed($project_id, $name, $is_default, $default_assignee_login) {
     $params = array(
-      'isDefault' => $is_default,
-      'defaultAssignee' => $default_assignee_login,
+      'isDefault' => (string)$is_default,
+      'defaultAssignee' => (string)$default_assignee_login,
     );
     $this->_put('/admin/project/'. urlencode($project_id). '/subsystem/'. urlencode($name) .'?'. http_build_query($params));
     return 'Created';
@@ -398,9 +393,9 @@ class Connection {
 
   public function create_version_detailed($project_id, $name, $is_released, $is_archived, $release_date = NULL, $description = '') {
     $params = array(
-      'description' => $description,
-      'isReleased' => $is_released,
-      'isArchived' => $is_archived,
+      'description' => (string)$description,
+      'isReleased' => (string)$is_released,
+      'isArchived' => (string)$is_archived,
     );
     if (!empty($release_date)) {
       $params['releaseDate'] = $release_date;
