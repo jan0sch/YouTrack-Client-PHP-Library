@@ -264,4 +264,10 @@ class Connection {
     }
     return $groups;
   }
+
+  public function set_user_group($login, $group_name) {
+    //FIXME Currently broken!
+    $r = $this->_request('POST', '/admin/user/'. urlencode($login) .'/group/'. urlencode($group_name));
+    return $r['response'];
+  }
 }
