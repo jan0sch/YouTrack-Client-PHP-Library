@@ -303,4 +303,13 @@ class Connection {
   public function get_version($project_id, $name) {
     return new Version($this->_get('/admin/project/'. urlencode($project_id) .'/version/'. urlencode($name)));
   }
+
+  public function get_builds($project_id) {
+    $xml = $this->_get('/admin/project/'. urlencode($project_id) .'/build');
+    $builds = array();
+    foreach ($xml->children() as $build) {
+      $builds[] = new Build(new \SimpleXMLElement($build->asXML()));
+    }
+    return $builds;
+  }
 }
