@@ -299,4 +299,8 @@ class Connection {
     }
     return $versions;
   }
+
+  public function get_version($project_id, $name) {
+    return new Version($this->_get('/admin/project/'. urlencode($project_id) .'/version/'. urlencode($name)));
+  }
 }
