@@ -443,4 +443,24 @@ class Connection {
     }
     return $fields;
   }
+
+  public function create_custom_fields($fields) {
+    foreach ($fields as $field) {
+      $this->create_custom_field($field);
+    }
+  }
+
+  public function create_custom_field($field) {
+    return $this->create_custom_field_detailed($field->name, $field->type, $field->isPrivate, $field->visibleByDefault);
+  }
+
+  public function create_custom_field_detailed($name, $type_name, $is_private, $default_visibility) {
+    $params = array(
+      'typeName' => (string)$type_name,
+      'isPrivate' => (string)$is_private,
+      'defaultVisibility' => (string)$default_visibility,
+    );
+    $this->_put('/admin/customfield/field/'. urlencode($name) .'?'. http_build_query($params));
+    return 'Created';
+  }
 }
