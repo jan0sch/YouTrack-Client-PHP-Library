@@ -312,4 +312,19 @@ class Connection {
     }
     return $builds;
   }
+
+  public function get_users() {
+    $users = array();
+    $pos = 0;
+    while (true) {
+      $xml = $this->_get('/admin/user/?start='. $pos);
+      if (count($xml) == 0) {
+        return $users;
+      }
+      foreach ($xml->children() as $user) {
+        $users[] = new User(new \SimpleXMLElement($user->asXML()));
+      }
+      $pos = $pos + 10;
+    }
+  }
 }
