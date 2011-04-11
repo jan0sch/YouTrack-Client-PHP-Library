@@ -434,4 +434,13 @@ class Connection {
   public function get_custom_field($name) {
     return new CustomField($this->_get('/admin/customfield/field/'. urlencode($name)));
   }
+
+  public function get_custom_fields() {
+    $xml = $this->_get('/admin/customfield/field');
+    $fields = array();
+    foreach ($xml->children() as $field) {
+      $fields[] = new CustomField(new \SimpleXMLElement($field->asXML()));
+    }
+    return $fields;
+  }
 }
