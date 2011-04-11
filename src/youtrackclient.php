@@ -336,3 +336,26 @@ class ProjectCustomField extends YouTrackObject {
     //TODO Not yet implemented!
   }
 }
+
+class EnumBundle extends YouTrackObject {
+  private $name = '';
+  private $values = array();
+
+  public function __construct(\SimpleXMLElement $xml = NULL, Connection $youtrack = NULL) {
+    parent::__construct($xml, $youtrack);
+  }
+
+  public function _update(\SimpleXMLElement $xml) {
+    throw new NotImplementedException("_update(xml)");
+  }
+
+  public function toXML() {
+    $xml = '<enumeration name="'. $this->name .'">';
+    foreach ($this->values as $v) {
+      $xml .= '<value>'. $v .'</value>';
+    }
+    $xml .= '</enumeration>';
+
+    return $xml;
+  }
+}
