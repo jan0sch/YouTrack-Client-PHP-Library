@@ -191,11 +191,11 @@ class Connection {
   }
 
   public function create_attachment_from_attachment($issue_id, Attachment $attachment) {
-    throw new \Exception("No yet implemented!");
+    throw new NotImplementedException("create_attachment_from_attachment(issue_id, attachment)");
   }
 
   public function create_attachment($issue_id, $name, $content, $author_login = '', $content_type = NULL, $content_length = NULL, $created = NULL, $group = '') {
-    throw new \Exception("No yet implemented!");
+    throw new NotImplementedException("create_attachment(issue_id, name, content, ...)");
   }
 
   public function get_links($id , $outward_only = FALSE) {
@@ -326,5 +326,9 @@ class Connection {
       }
       $pos = $pos + 10;
     }
+  }
+
+  public function create_build() {
+    throw new NotImplementedException("create_build()");
   }
 }
