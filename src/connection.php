@@ -430,4 +430,8 @@ class Connection {
     $r = $this->_request('POST', '/issue/'. urlencode($issue_id) .'/execute?'. http_build_query($params));
     return 'Command executed';
   }
+
+  public function get_custom_field($name) {
+    return new CustomField($this->_get('/admin/customfield/field/'. urlencode($name)));
+  }
 }
