@@ -463,4 +463,17 @@ class Connection {
     $this->_put('/admin/customfield/field/'. urlencode($name) .'?'. http_build_query($params));
     return 'Created';
   }
+
+  public function get_enum_bundle($name) {
+    return new EnumBundle($this->_get('/admin/customfield/bundle/'. urlencode($name)));
+  }
+
+  public function create_enum_bundle(EnumBundle $bundle) {
+    return $this->_request_xml('PUT', '/admin/customfield/bundle', $bundle->toXML(), 400);
+  }
+
+  public function delete_enum_bundle($name) {
+    $r = $this->_request('DELETE', '/admin/customfield/bundle/'. urlencode($name), '');
+    return $r['content'];
+  }
 }
