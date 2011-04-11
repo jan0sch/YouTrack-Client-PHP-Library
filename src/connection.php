@@ -514,4 +514,33 @@ class Connection {
     }
     return $this->_put('/admin/project/'. urlencode($project_id) .'/customfield/'. urlencode($name) .'?'. http_build_query($_params));
   }
+
+  public function get_issue_link_types() {
+    $xml = $this->_get('/admin/issueLinkType');
+    $lts = array();
+    foreach ($xml->children() as $node) {
+      $lts[] = new IssueLinkType(new \SimpleXMLElement($node->asXML()));
+    }
+    return $lts;
+  }
+
+  public function create_issue_link_types($lts) {
+    foreach ($lts as $lt) {
+      $this->create_issue_link_type($lt);
+    }
+  }
+
+  public function create_issue_link_type($ilt) {
+    return $this->create_issue_link_type_detailed($ilt->name, $ilt->outwardName, $ilt->inwardName, $ilt->directed);
+  }
+
+  public function create_issue_link_type_detailed($name, $outward_name, $inward_name, $directed) {
+    $params = array(
+      'outwardName' => (string)$outward_name,
+      'inwardName' => (string)$inward_name,
+      'directed' => (string)$directed,
+    );
+    return $this->_put('/admin/issueLinkType/'. urlencode($name) .'?'. http_build_query($params));
+  }
+
 }
