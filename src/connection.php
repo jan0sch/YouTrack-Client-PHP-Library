@@ -25,7 +25,7 @@ class Connection {
   protected function _login($login, $password) {
     curl_setopt($this->http, CURLOPT_POST, TRUE);
     curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length: 0')); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
-    curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login=' . $login . '&password=' . $password);
+    curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login='. urlencode($login) .'&password='. urlencode($password));
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($this->http, CURLOPT_HEADER, TRUE);
     curl_setopt($this->http, CURLOPT_USERAGENT, $this->user_agent);
