@@ -265,7 +265,6 @@ class Connection {
   }
 
   public function set_user_group($login, $group_name) {
-    //FIXME Currently broken!
     $r = $this->_request('POST', '/admin/user/'. urlencode($login) .'/group/'. urlencode($group_name));
     return $r['response'];
   }
@@ -281,5 +280,14 @@ class Connection {
 
   public function get_subsystem($project_id, $name) {
     return new Subsystem($this->_get('/admin/project/'. urlencode($project_id) .'/subsystem/'. urlencode($name)));
+  }
+
+  public function get_subsystems($project_id) {
+    $xml = $this->_get('/admin/project/'. urlencode($project_id) .'/subsystem');
+    $subsystems = array();
+    foreach ($xml->children() as $subsystem) {
+      $subsystems[] = new Subsystem(new \SimpleXMLElement($subsystem->asXML()));
+    }
+    return $subsystems;
   }
 }
