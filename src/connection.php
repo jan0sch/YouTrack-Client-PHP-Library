@@ -270,4 +270,9 @@ class Connection {
     $r = $this->_request('POST', '/admin/user/'. urlencode($login) .'/group/'. urlencode($group_name));
     return $r['response'];
   }
+
+  public function create_group(Group $group) {
+    $r = $this->_put('/admin/group/%s?description=noDescription&autoJoin=false'. urlencode($group->name));
+    return $r['response'];
+  }
 }
