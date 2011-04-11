@@ -239,8 +239,7 @@ class Connection {
   }
 
   public function get_project($project_id) {
-    $project = $this->_get('/admin/project/'. urlencode($project_id));
-    return new Project($project);
+    return new Project($this->_get('/admin/project/'. urlencode($project_id)));
   }
 
   public function get_project_assignee_groups($project_id) {
