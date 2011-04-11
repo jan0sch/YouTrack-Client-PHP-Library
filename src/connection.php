@@ -381,4 +381,8 @@ class Connection {
     $this->_put('/admin/project/'. urlencode($project_id). '/subsystem/'. urlencode($name) .'?'. http_build_query($params));
     return 'Created';
   }
+
+  public function delete_subsystem($project_id, $name) {
+    return $this->_request_xml('DELETE', '/admin/project/'. urlencode($project_id) .'/subsystem/'. urlencode($name));
+  }
 }
