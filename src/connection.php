@@ -476,4 +476,15 @@ class Connection {
     $r = $this->_request('DELETE', '/admin/customfield/bundle/'. urlencode($name), '');
     return $r['content'];
   }
+
+  public function add_value_to_enum_bundle($name, $value) {
+    return $this->_put('/admin/customfield/bundle/'. urlencode($name) .'/'. urlencode($value));
+  }
+
+  public function add_values_to_enum_bundle($name, $values) {
+    foreach ($values as $value) {
+      $this->add_value_to_enum_bundle($name, $value);
+    }
+    return implode(', ', $values);
+  }
 }
