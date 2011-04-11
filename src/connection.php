@@ -487,4 +487,31 @@ class Connection {
     }
     return implode(', ', $values);
   }
+
+  public function get_project_custom_field($project_id, $name) {
+    return new CustomField($this->_get('/admin/project/'. urlencode($project_id) .'/customfield/'. urlencode($name)));
+  }
+
+  public function get_project_custom_fields($project_id) {
+    $xml = $this->_get('/admin/project/'. urlencode($project_id) .'/customfield');
+    $fields = array();
+    foreach ($xml->children() as $cfield) {
+      $fields[] = new CustomField(new \SimpleXMLElement($cfield->asXML()));
+    }
+    return $fields;
+  }
+
+  public function create_project_custom_field($project_id, CustomField $pcf) {
+    return $this->create_project_custom_field_detailed($project_id, $pcf->name, $pcf->emptyText, $pcf->params);
+  }
+
+  private function create_project_custom_field_detailed($project_id, $name, $empty_field_text, $params = array()) {
+    $_params = array(
+      'emptyFieldText' => (string)$empty_field_text,
+    );
+    if (!empty($params)) {
+      $_params = array_merge($_params, $params);
+    }
+    return $this->_put('/admin/project/'. urlencode($project_id) .'/customfield/'. urlencode($name) .'?'. http_build_query($_params));
+  }
 }
