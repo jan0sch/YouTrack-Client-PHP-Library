@@ -237,4 +237,11 @@ class Connection {
     $xml .= "</list>";
     return $this->_request_xml('PUT', '/import/users', $xml, 400);
   }
+
+  public function get_project($project_id) {
+    $project = $this->_get('/admin/project/'. urlencode($project_id));
+    return new Project($project);
+  }
+
+
 }
