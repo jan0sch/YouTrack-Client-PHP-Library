@@ -421,4 +421,18 @@ class Connection {
     }
     return $issues;
   }
+
+  public function execute_command($issue_id, $command, $comment = NULL, $group = NULL) {
+    $params = array(
+      'command' => (string)$command,
+    );
+    if (!empty($comment)) {
+      $params['comment'] = (string)$comment;
+    }
+    if (!empty($group)) {
+      $params['group'] = (string)$group;
+    }
+    $r = $this->_request('POST', '/issue/'. urlencode($issue_id) .'/execute?'. http_build_query($params));
+    return 'Command executed';
+  }
 }
