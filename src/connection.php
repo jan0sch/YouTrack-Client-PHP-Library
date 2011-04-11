@@ -290,4 +290,13 @@ class Connection {
     }
     return $subsystems;
   }
+
+  public function get_versions($project_id) {
+    $xml = $this->_get('/admin/project/'. urlencode($project_id) .'/version?showReleased=true');
+    $versions = array();
+    foreach ($xml->children() as $version) {
+      $versions[] = new Version(new \SimpleXMLElement($version->asXML()));
+    }
+    return $versions;
+  }
 }
