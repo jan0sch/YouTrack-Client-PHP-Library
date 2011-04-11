@@ -345,8 +345,14 @@ class EnumBundle extends YouTrackObject {
     parent::__construct($xml, $youtrack);
   }
 
-  public function _update(\SimpleXMLElement $xml) {
-    throw new NotImplementedException("_update(xml)");
+  protected function _update_attributes(\SimpleXMLElement $xml) {
+    $this->name = (string)$xml->attributes()->name;
+  }
+
+  protected function _update_children_attributes(\SimpleXMLElement $xml) {
+    foreach ($xml->children() as $node) {
+      $this->values[] = (string)$node;
+    }
   }
 
   public function toXML() {
