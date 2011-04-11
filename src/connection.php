@@ -331,4 +331,8 @@ class Connection {
   public function create_build() {
     throw new NotImplementedException("create_build()");
   }
+
+  public function create_builds() {
+    throw new NotImplementedException("create_builds()");
+  }
 }
