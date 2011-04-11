@@ -275,4 +275,8 @@ class Connection {
     $r = $this->_put('/admin/group/'. urlencode($group->name) .'?description=noDescription&autoJoin=false');
     return $r['response'];
   }
+
+  public function get_role($name) {
+    return new Role($this->_get('/admin/role/'. urlencode($name)));
+  }
 }
