@@ -263,11 +263,11 @@ class Project extends YouTrackObject {
   }
 
   public function get_subsystems() {
-    //TODO Not yet implemented!
+    return $this->youtrack->get_subsystems($this->id);
   }
 
   public function create_subsystem($name, $is_default, $default_assignee_login) {
-    //TODO Not yet implemented!
+    return $this->youtrack->create_subsystem($this->id, $name, $is_default, $default_assignee_login);
   }
 }
 
@@ -333,7 +333,7 @@ class ProjectCustomField extends YouTrackObject {
   }
 
   protected function _update_children_attributes(\SimpleXMLElement $xml) {
-    //TODO Not yet implemented!
+    throw new NotImplementedException("_update_children_attributes(xml)");
   }
 }
 
