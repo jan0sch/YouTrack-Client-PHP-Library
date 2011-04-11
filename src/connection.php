@@ -347,4 +347,19 @@ class Connection {
   public function create_builds() {
     throw new NotImplementedException("create_builds()");
   }
+
+  public function create_project($project) {
+    return $this->create_project_detailed($project->id, $project->name, $project->description, $project->leader);
+  }
+
+  public function create_project_detailed($project_id, $project_name, $project_description, $project_lead_login, $starting_number = 1) {
+    $params = array(
+      'projectName' => $project_name,
+      'description' => $project_description,
+      'projectLeadLogin' => $project_lead_login,
+      'lead' => $project_lead_login,
+      'startingNumber' => $starting_number,
+    );
+    return $this->_put('/admin/project/'. urlencode($project_id) .'?'. http_build_query($params));
+  }
 }
