@@ -407,4 +407,18 @@ class Connection {
     }
     return $this->_put('/admin/project/'. urldecode($project_id) .'/version/'. urlencode($name) .'?'. http_build_query($params));
   }
+
+  public function get_issues($project_id, $filter, $after, $max) {
+    $params = array(
+      'after' => (string)$after,
+      'max' => (string)$max,
+      'filter' => (string)$filter,
+    );
+    $xml = $this->_get('/project/issues/'. urldecode($project_id) .'?'. http_build_query($params));
+    $issues = array();
+    foreach ($xml->children() as $issue) {
+      $issues[] = new Issue(new \SimpleXMLElement($issue->asXML()));
+    }
+    return $issues;
+  }
 }
