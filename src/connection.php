@@ -385,4 +385,26 @@ class Connection {
   public function delete_subsystem($project_id, $name) {
     return $this->_request_xml('DELETE', '/admin/project/'. urlencode($project_id) .'/subsystem/'. urlencode($name));
   }
+
+  public function create_versions($project_id, $versions) {
+    foreach ($versions as $version) {
+      $this->create_version($project_id, $version);
+    }
+  }
+
+  public function create_version($project_id, $version) {
+    return $this->create_version_detailed($project_id, $version->name, $version->isReleased, $version->isArchived, $version->releaseDate, $version->description);
+  }
+
+  public function create_version_detailed($project_id, $name, $is_released, $is_archived, $release_date = NULL, $description = '') {
+    $params = array(
+      'description' => $description,
+      'isReleased' => $is_released,
+      'isArchived' => $is_archived,
+    );
+    if (!empty($release_date)) {
+      $params['releaseDate'] = $release_date;
+    }
+    return $this->_put('/admin/project/'. urldecode($project_id) .'/version/'. urlencode($name) .'?'. http_build_query($params));
+  }
 }
