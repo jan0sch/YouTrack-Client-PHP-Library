@@ -68,14 +68,23 @@ class Connection {
         curl_setopt($this->http, CURLOPT_HTTPGET, TRUE);
         break;
       case 'PUT':
-        $size = filesize($body);
-        if (!$size) {
-          throw new \Exception("Can't open file $body!");
+        $handle = NULL;
+        $size = 0;
+        // Check if we got a file or just a string of data.
+        if (file_exists($body)) {
+          $size = filesize($body);
+          if (!$size) {
+            throw new \Exception("Can't open file $body!");
+          }
+          $handle = fopen($body, 'r');
         }
-        $handle = fopen($body, 'r');
+        else {
+          $size = mb_strlen($body);
+          $handle = fopen('data://text/plain,' . $body,'r');
+        }
         curl_setopt($this->http, CURLOPT_PUT, TRUE);
         curl_setopt($this->http, CURLOPT_INFILE, $handle);
-        curl_setopt($this->http, CURLOPT_INFILESIZE, 0);
+        curl_setopt($this->http, CURLOPT_INFILESIZE, $size);
         break;
       case 'POST':
         curl_setopt($this->http, CURLOPT_POST, TRUE);
@@ -203,5 +212,29 @@ class Connection {
 
   public function get_user($login) {
     return new User($this->_get('/admin/user/'. urlencode($login)));
+  }
+
+  public function create_user($user) {
+    $this->import_users(array($user));
+  }
+
+  public function create_user_detailed($login, $full_name, $email, $jabber) {
+    $this->import_users(array(array('login' => $login, 'fullName' => $full_name, 'email' => $email, 'jabber' => $jabber)));
+  }
+
+  public function import_users($users) {
+    if (count($users) <= 0) {
+      return;
+    }
+    $xml = "<list>\n";
+    foreach ($users as $user) {
+      $xml .= "  <user";
+      foreach ($user as $key => $value) {
+        $xml .= " $key=". urlencode($value);
+      }
+      $xml .= " />\n";
+    }
+    $xml .= "</list>";
+    return $this->_request_xml('PUT', '/import/users', $xml, 400);
   }
 }
