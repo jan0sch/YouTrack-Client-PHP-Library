@@ -100,6 +100,7 @@ class Connection {
     curl_setopt($this->http, CURLOPT_HTTPHEADER, $headers[CURLOPT_HTTPHEADER]);
     curl_setopt($this->http, CURLOPT_USERAGENT, $this->user_agent);
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($this->http, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
     curl_setopt($this->http, CURLOPT_COOKIE, implode(';', $this->cookies));
     $content = curl_exec($this->http);
