@@ -14,6 +14,7 @@ class Connection {
   private $cookies = array();
   private $debug_verbose = FALSE; // Set to TRUE to enable verbose logging of curl messages.
   private $user_agent = 'Mozilla/5.0'; // Use this as user agent string.
+  private $verify_ssl = TRUE;
 
   public function __construct($url, $login, $password) {
     $this->http = curl_init();
@@ -28,6 +29,7 @@ class Connection {
     curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login='. urlencode($login) .'&password='. urlencode($password));
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($this->http, CURLOPT_HEADER, TRUE);
+    curl_setopt($this->http, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
     curl_setopt($this->http, CURLOPT_USERAGENT, $this->user_agent);
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
     $content = curl_exec($this->http);
@@ -541,6 +543,21 @@ class Connection {
       'directed' => (string)$directed,
     );
     return $this->_put('/admin/issueLinkType/'. urlencode($name) .'?'. http_build_query($params));
+  }
+
+  public function get_verify_ssl() {
+    return $this->verify_ssl;
+  }
+
+  /**
+   * Use this method to enable or disable the ssl_verifypeer option of curl.
+   * This is usefull if you use self-signed ssl certificates.
+   *
+   * @param bool $verify_ssl
+   * @return void
+   */
+  public function set_verify_ssl($verify_ssl) {
+    $this->verify_ssl = $verify_ssl;
   }
 
 }
