@@ -37,7 +37,7 @@ class YouTrackException extends \Exception {
    * @param array $content The content returned from the url.
    */
   public function __construct($url, $response, $content) {
-    $code = 0;
+    $code = (int)$response['http_code'];
     $previous = NULL;
     $message = "Error for '" . $url . "': " . $response['http_code'];
     if (!empty($response['content_type']) && !preg_match('/text\/html/', $response['content_type'])) {
