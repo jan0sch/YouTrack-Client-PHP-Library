@@ -14,7 +14,7 @@ class Connection {
   private $cookies = array();
   private $debug_verbose = FALSE; // Set to TRUE to enable verbose logging of curl messages.
   private $user_agent = 'Mozilla/5.0'; // Use this as user agent string.
-  private $verify_ssl = TRUE;
+  private $verify_ssl = FALSE;
 
   public function __construct($url, $login, $password) {
     $this->http = curl_init();
@@ -24,14 +24,19 @@ class Connection {
   }
 
   /**
-   * Remove all unset parameters from the given array.
+   * Loop through the given array and remove all entries
+   * that have no value assigned.
    *
-   * @param array &$params An array holding parameters.
+   * @param array &$params The array to inspect and clean up.
    */
   private function _clean_url_parameters(&$params) {
-    foreach ($params as $key => $value) {
-      if (empty($value)) unset($params["$key"]);
-    } // foreach
+    if (!empty($params) && is_array($params)) {
+      foreach ($params as $key => $value) {
+	if (empty($value)) {
+	  unset($params["$key"]);
+	}
+      } // foreach
+    }
   }
 
   protected function _login($login, $password) {
