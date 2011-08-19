@@ -23,6 +23,17 @@ class Connection {
     $this->_login($login, $password);
   }
 
+  /**
+   * Remove all unset parameters from the given array.
+   *
+   * @param array &$params An array holding parameters.
+   */
+  private function _clean_url_parameters(&$params) {
+    foreach ($params as $key => $value) {
+      if (empty($value)) unset($params["$key"]);
+    } // foreach
+  }
+
   protected function _login($login, $password) {
     curl_setopt($this->http, CURLOPT_POST, TRUE);
     curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length: 0')); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
@@ -412,6 +423,7 @@ class Connection {
       'max' => (string)$max,
       'filter' => (string)$filter,
     );
+    $this->_clean_url_parameters($params);
     $xml = $this->_get('/project/issues/'. urldecode($project_id) .'?'. http_build_query($params));
     $issues = array();
     foreach ($xml->children() as $issue) {
