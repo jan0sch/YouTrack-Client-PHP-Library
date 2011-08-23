@@ -339,19 +339,20 @@ class Connection {
     return $builds;
   }
 
-  public function get_users() {
+  public function get_users($q = '') {
     $users = array();
-    $pos = 0;
-    while (true) {
-      $xml = $this->_get('/admin/user/?start='. $pos);
-      if (count($xml) == 0) {
-        return $users;
-      }
+    $q = trim((string)$q);
+    $params = array(
+      'q' => $q,
+    );
+    $this->_clean_url_parameters($params);
+    $xml = $this->_get('/admin/user/?'. http_build_query($params));
+    if (!empty($xml) && is_object($xml)) {
       foreach ($xml->children() as $user) {
         $users[] = new User(new \SimpleXMLElement($user->asXML()));
       }
-      $pos = $pos + 10;
     }
+    return $users;
   }
 
   public function create_build() {
