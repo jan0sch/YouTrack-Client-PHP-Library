@@ -175,6 +175,17 @@ class Connection {
     return new Issue($issue);
   }
 
+  public function get_accessible_projects() {
+    $xml = $this->_get('/project/all');
+    $projects = array();
+
+    foreach ($xml->children() as $node) {
+      $node = new \YouTrack\Project(new \SimpleXMLElement($node->asXML()));
+      $projects[] = $node;
+    }
+    return $projects;
+  }
+
   public function get_comments($id) {
     $comments = array();
     $req = $this->_request('GET', '/issue/'. urlencode($id) .'/comment');
