@@ -364,4 +364,8 @@ class EnumBundle extends YouTrackObject {
 
     return $xml;
   }
+
+  public function getValues() {
+    return $this->values;
+  }
 }
