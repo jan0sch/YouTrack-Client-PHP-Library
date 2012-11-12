@@ -6,7 +6,7 @@ The bugtracker [YouTrack](http://www.jetbrains.com/youtrack/) provides a [REST-A
 Basically this is a port of the offical python api from Jetbrains.
 The initial development was sponsored by [Telematika GmbH](http://www.telematika.de).
 
-The source of this library is released under the BSD license (see COPYING for details).
+The source of this library is released under the BSD license (see LICENSE for details).
 
 Requirements
 ------------
