@@ -157,20 +157,41 @@ class Connection {
     return new Issue($issue);
   }
 
-  public function create_issue($project, $assignee, $summary, $description, $priority, $type, $subsystem, $state, $affectsVersion, $fixedVersion, $fixedInBuild) {
-    $params = array(
-      'project' => (string)$project,
-      'assignee' => (string)$assignee,
-      'summary' => (string)$summary,
-      'description' => (string)$description,
-      'priority' => (string)$priority,
-      'type' => (string)$type,
-      'subsystem' => (string)$subsystem,
-      'state' => (string)$state,
-      'affectsVersion' => (string)$affectsVersion,
-      'fixedVersion' => (string)$fixedVersion,
-      'fixedInBuild' => (string)$fixedInBuild,
-    );
+    /**
+     * creates an issue with properties from $params
+     *
+     * may be this is an general $params value:
+     * <code>
+     *  $params = array(
+        'project' => (string)$project,
+        'assignee' => (string)$assignee,
+        'summary' => (string)$summary,
+        'description' => (string)$description,
+        'priority' => (string)$priority,
+        'type' => (string)$type,
+        'subsystem' => (string)$subsystem,
+        'state' => (string)$state,
+        'affectsVersion' => (string)$affectsVersion,
+        'fixedVersion' => (string)$fixedVersion,
+        'fixedInBuild' => (string)$fixedInBuild,
+        );
+     * </code>
+     *
+     * @param string $project the obligatory project name
+     * @param string $summary the obligatory issue summary
+     * @param array $params optional additional parameters for the new issue (look into your personal youtrack instance!)
+     * @return Issue
+     */
+    public function create_issue($project, $summary, $params = []) {
+
+    $params['project'] = (string)$project;
+    $params['summary'] = (string)$summary;
+    array_walk($params, function (&$value) {
+      // php manual: If funcname needs to be working with the actual values of the array,
+      //  specify the first parameter of funcname as a reference. Then, any changes made to
+      //  those elements will be made in the original array itself.
+      $value = (string)$value;
+    });
     $issue = $this->_request_xml('POST', '/issue?'. http_build_query($params));
     return new Issue($issue);
   }
