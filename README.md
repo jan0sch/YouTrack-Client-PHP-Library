@@ -24,3 +24,9 @@ The source of this library is released under the BSD license (see LICENSE for de
     $issue = $youtrack->get_issue("TEST-1");
     ...
 
+## Tests
+
+The unit tests are incomplete but you can run them using `phpunit` like this:
+
+    % phpunit test
+
