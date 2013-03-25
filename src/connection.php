@@ -41,13 +41,14 @@ class Connection {
 
   protected function _login($login, $password) {
     curl_setopt($this->http, CURLOPT_POST, TRUE);
-    curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length: 0')); //FIXME This doesn't work if youtrack is running behind lighttpd! @see http://redmine.lighttpd.net/issues/1717
+    curl_setopt($this->http, CURLOPT_HTTPHEADER, array('Content-Length: 1')); //Workaround for problems when after lighthttp proxy
     curl_setopt($this->http, CURLOPT_URL, $this->base_url . '/user/login?login='. urlencode($login) .'&password='. urlencode($password));
     curl_setopt($this->http, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($this->http, CURLOPT_HEADER, TRUE);
     curl_setopt($this->http, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
     curl_setopt($this->http, CURLOPT_USERAGENT, $this->user_agent);
     curl_setopt($this->http, CURLOPT_VERBOSE, $this->debug_verbose);
+    curl_setopt($this->http,CURLOPT_POSTFIELDS,"a");
     $content = curl_exec($this->http);
     $response = curl_getinfo($this->http);
     if ((int) $response['http_code'] != 200) {
