@@ -1,5 +1,6 @@
-YouTrack Client PHP Library
-===========================
+# YouTrack Client PHP Library
+
+[![Build Status](https://travis-ci.org/jan0sch/YouTrack-Client-PHP-Library.png?branch=master)](https://travis-ci.org/jan0sch/YouTrack-Client-PHP-Library)
 
 The bugtracker [YouTrack](http://www.jetbrains.com/youtrack/) provides a [REST-API](http://confluence.jetbrains.net/display/YTD3/YouTrack+REST+API+Reference). Because a lot of web applications are written in [PHP](http://php.net) I decided to write a client library for it. To make it easier for developers to write connectors to YouTrack.
 
@@ -8,16 +9,14 @@ The initial development was sponsored by [Telematika GmbH](http://www.telematika
 
 The source of this library is released under the BSD license (see LICENSE for details).
 
-Requirements
-------------
+## Requirements
 
 * PHP 5.3.x (Any version above 5 might work but I can't guarantee that.)
 * curl
 * simplexml
 * YouTrack 3.0 with REST-API enabled
 
-Usage
------
+## Usage
 
     <?php
     require_once("youtrackclient.php");
