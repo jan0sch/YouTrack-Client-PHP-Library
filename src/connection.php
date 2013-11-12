@@ -193,7 +193,7 @@ class Connection {
       //  those elements will be made in the original array itself.
       $value = (string)$value;
     });
-    $issue = $this->_request_xml('POST', '/issue?'. http_build_query($params));
+    $issue = $this->_request_xml('POST', '/issue?'. http_build_query($params, '', '&'));
     return new Issue($issue);
   }
 
@@ -379,7 +379,7 @@ class Connection {
       'q' => $q,
     );
     $this->_clean_url_parameters($params);
-    $xml = $this->_get('/admin/user/?'. http_build_query($params));
+    $xml = $this->_get('/admin/user/?'. http_build_query($params, '', '&'));
     if (!empty($xml) && is_object($xml)) {
       foreach ($xml->children() as $user) {
         $users[] = new User(new \SimpleXMLElement($user->asXML()));
@@ -408,7 +408,7 @@ class Connection {
       'lead' => (string)$project_lead_login,
       'startingNumber' => (string)$starting_number,
     );
-    return $this->_put('/admin/project/'. urlencode($project_id) .'?'. http_build_query($params));
+    return $this->_put('/admin/project/'. urlencode($project_id) .'?'. http_build_query($params, '', '&'));
   }
 
   public function create_subsystems($project_id, $subsystems) {
@@ -426,7 +426,7 @@ class Connection {
       'isDefault' => (string)$is_default,
       'defaultAssignee' => (string)$default_assignee_login,
     );
-    $this->_put('/admin/project/'. urlencode($project_id). '/subsystem/'. urlencode($name) .'?'. http_build_query($params));
+    $this->_put('/admin/project/'. urlencode($project_id). '/subsystem/'. urlencode($name) .'?'. http_build_query($params, '', '&'));
     return 'Created';
   }
 
@@ -453,7 +453,7 @@ class Connection {
     if (!empty($release_date)) {
       $params['releaseDate'] = $release_date;
     }
-    return $this->_put('/admin/project/'. urldecode($project_id) .'/version/'. urlencode($name) .'?'. http_build_query($params));
+    return $this->_put('/admin/project/'. urldecode($project_id) .'/version/'. urlencode($name) .'?'. http_build_query($params, '', '&'));
   }
 
   public function get_issues($project_id, $filter, $after, $max) {
@@ -463,7 +463,7 @@ class Connection {
       'filter' => (string)$filter,
     );
     $this->_clean_url_parameters($params);
-    $xml = $this->_get('/project/issues/'. urldecode($project_id) .'?'. http_build_query($params));
+    $xml = $this->_get('/project/issues/'. urldecode($project_id) .'?'. http_build_query($params, '', '&'));
     $issues = array();
     foreach ($xml->children() as $issue) {
       $issues[] = new Issue(new \SimpleXMLElement($issue->asXML()));
@@ -481,7 +481,7 @@ class Connection {
     if (!empty($group)) {
       $params['group'] = (string)$group;
     }
-    $r = $this->_request('POST', '/issue/'. urlencode($issue_id) .'/execute?'. http_build_query($params));
+    $r = $this->_request('POST', '/issue/'. urlencode($issue_id) .'/execute?'. http_build_query($params, '', '&'));
     return 'Command executed';
   }
 
@@ -514,7 +514,7 @@ class Connection {
       'isPrivate' => (string)$is_private,
       'defaultVisibility' => (string)$default_visibility,
     );
-    $this->_put('/admin/customfield/field/'. urlencode($name) .'?'. http_build_query($params));
+    $this->_put('/admin/customfield/field/'. urlencode($name) .'?'. http_build_query($params, '', '&'));
     return 'Created';
   }
 
@@ -566,7 +566,7 @@ class Connection {
     if (!empty($params)) {
       $_params = array_merge($_params, $params);
     }
-    return $this->_put('/admin/project/'. urlencode($project_id) .'/customfield/'. urlencode($name) .'?'. http_build_query($_params));
+    return $this->_put('/admin/project/'. urlencode($project_id) .'/customfield/'. urlencode($name) .'?'. http_build_query($_params, '', '&'));
   }
 
   public function get_issue_link_types() {
@@ -594,7 +594,7 @@ class Connection {
       'inwardName' => (string)$inward_name,
       'directed' => (string)$directed,
     );
-    return $this->_put('/admin/issueLinkType/'. urlencode($name) .'?'. http_build_query($params));
+    return $this->_put('/admin/issueLinkType/'. urlencode($name) .'?'. http_build_query($params, '', '&'));
   }
 
   public function get_verify_ssl() {
