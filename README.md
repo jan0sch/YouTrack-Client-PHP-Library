@@ -1,3 +1,8 @@
+## Attention!
+
+Because I was lucky enough to be able to dump php completely this repository is no longer under development!
+If you want to take over as maintainer, just drop me a line. Meanwhile the [fork from nepda](https://github.com/nepda/youtrack) has some more functionality.
+
 # YouTrack Client PHP Library
 
 [![Build Status](https://travis-ci.org/jan0sch/YouTrack-Client-PHP-Library.png?branch=master)](https://travis-ci.org/jan0sch/YouTrack-Client-PHP-Library)
