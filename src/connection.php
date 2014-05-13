@@ -286,7 +286,32 @@ class Connection {
   }
 
   public function import_issues_xml($project_id, $assignee_group, $xml) {
-    throw new NotImplementedException("import_issues_xml(project_id, assignee_group, xml)");
+    $issues = $xml;
+    $issue_count = 0;
+    $issues_array = array();
+    $issue_array = array();
+
+    foreach ($issues as $i => $issue) {
+      $summary = "";
+      foreach ($issue as $i_ => $issue_) {
+        $issue_array[(string)$issue_->attributes()->name] = $issue_->value;
+      }
+      $issue_array[$issue_count] = $issue_array;
+      $summary = $issues_array[$issue_count]['summary'];
+      $this->create_issue($project_id, $summary, array(
+        'assignee' => $issues_array[$issue_count]['assignee'],
+        'summary' => $issues_array[$issue_count]['summary'],
+        'description' => $issues_array[$issue_count]['description'],
+        'priority' => $issues_array[$issue_ciount]['Priority'],
+        'type' => $issues_array[$issue_count]['Type'],
+        'subsystem' => $issues_array[$issue_count]['Subsystem'],
+        'state' => $issues_array[$issue_count]['State'],
+        'affectsVersion' => $issues_array[$issue_count]['Affects Version'],
+        'fixedVersion' => $issues_array[$issue_count]['Fixed Version'],
+        'fixedInBuild' => $issues_array[$issue_count]['Fixed In Build'],
+        ));
+      $issue_count++;
+    }
   }
 
   public function import_links($links) {
