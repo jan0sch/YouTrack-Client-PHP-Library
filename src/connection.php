@@ -312,6 +312,11 @@ class Connection {
         ));
       $issue_count++;
     }
+    /** 
+     * This method has been structured to easily support the debugging of
+     * your xml files. To do so simply output the $issues_array with your own
+     * methods.
+     */
   }
 
   public function import_links($links) {
