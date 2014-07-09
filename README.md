@@ -30,3 +30,11 @@ The unit tests are incomplete but you can run them using `phpunit` like this:
 
     % phpunit test
 
+## Contributors
+
+* [@jan0sch](https://github.com/jan0sch)
+* [@jkswoods](https://github.com/jkswoods)
+* [@Shyru](https://github.com/Shyru)
+* [@nepda](https://github.com/nepda)
+* [@richardhinkamp](https://github.com/richardhinkamp)
+
